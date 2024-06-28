@@ -7,5 +7,6 @@ const enum HttpMethods {
 }
 
 export const API = {
-  login: { apiPath: '', action: HttpMethods.POST }
+  login: { apiPath: 'https://api.openweathermap.org/data/2.5/weather', action: HttpMethods.GET },
+  weatherCity: { apiPath: 'https://api.openweathermap.org/data/2.5/weather', action: HttpMethods.GET }
 }
