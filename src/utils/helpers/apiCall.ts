@@ -26,7 +26,8 @@ export const apiCall = async (apiParams: IAPIParams): Promise<IAPIParams> => {
 export const defaultHeader = (): IDefaultHeader => {
   const token: string = store.getState().auth?.token
   const headers: IDefaultHeader = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*'
   }
   if (token !== '') {
     headers.Authorization = `Bearer ${token}`

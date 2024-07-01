@@ -9,7 +9,7 @@ function * login (requestDetails: any): Generator<any, void, any> {
     const headers = defaultHeader()
     const response = yield apiCall({ headers, ...API.login, data: requestDetails.payload })
     if (response.status === 200) {
-      yield put(authLoginResponse(response.data))
+      yield put(authLoginResponse(response.data.json()))
     } else {
       yield put(authLoginFailure("Couldn't retrieve users"))
     }

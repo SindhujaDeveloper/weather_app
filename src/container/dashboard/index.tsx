@@ -20,7 +20,7 @@ const Dashboard: React.FC = () => {
     City: string
     Lat: number
     Long: number
-  }>()
+  } | null>(null)
 
   const [city, setCity] = useState<Array<{
     State: string
@@ -60,11 +60,13 @@ const Dashboard: React.FC = () => {
     setFilteredCity(cityWithSearch)
   }, [searchQuery])
 
+  console.log(searchQuery, 'search', filteredCity, 'filteredCity')
+
   return (
     <div className='dashboard-container'>
       <Dropdown>
         <Dropdown.Toggle variant="success" id="dropdown-basic">
-          Dropdown Button
+          {selectedState !== '' ? selectedState : 'Choose'}
         </Dropdown.Toggle>
         <Dropdown.Menu>
           {state.map((it, index) => (
@@ -74,7 +76,7 @@ const Dashboard: React.FC = () => {
       </Dropdown>
       <Dropdown>
         <Dropdown.Toggle variant="success" id="dropdown-basic">
-          Dropdown Button
+          {selectedCity !== null ? selectedCity?.City : 'Choose'}
         </Dropdown.Toggle>
         <Dropdown.Menu>
           <FormControl
@@ -86,15 +88,16 @@ const Dashboard: React.FC = () => {
           />
           {filteredCity.map((it, index) => (
             <Dropdown.Item key={`state-${index}`} onClick={() => { setSelectedCity(it) }}>{it.City}</Dropdown.Item>
-
           ))}
         </Dropdown.Menu>
       </Dropdown>
       <Button
         onClick={() => {
           dispatch(weatherBasedOnCityRequest({
-            lat: selectedCity?.Lat.toFixed(2),
-            lon: selectedCity?.Long.toFixed(2),
+            q: selectedCity?.City,
+            units: 'metric',
+            // lat: selectedCity?.Lat.toFixed(2),
+            // lon: selectedCity?.Long.toFixed(2),
             appid: '015e4eaea9c137865941644a12e60199'
           }))
         }}

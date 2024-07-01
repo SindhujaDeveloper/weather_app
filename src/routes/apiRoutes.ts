@@ -8,5 +8,5 @@ const enum HttpMethods {
 
 export const API = {
   login: { apiPath: 'https://api.openweathermap.org/data/2.5/weather', action: HttpMethods.GET },
-  weatherCity: { apiPath: 'https://api.openweathermap.org/data/2.5/weather', action: HttpMethods.GET }
+  weatherCity: { apiPath: 'https://cors-anywhere.herokuapp.com/https://api.openweathermap.org/data/2.5/weather', action: HttpMethods.GET }
 }
