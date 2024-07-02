@@ -3,7 +3,8 @@ import { type IActionWithPayload } from 'types'
 
 const initialState: any = {
   isFetching: false,
-  error: ''
+  error: '',
+  weatherData: null
 }
 
 const weatherSlice = createSlice({
@@ -16,6 +17,7 @@ const weatherSlice = createSlice({
     },
     weatherBasedOnCityResponse: (state: any, action: IActionWithPayload<any>) => {
       state.isFetching = false
+      state.weatherData = action.payload
     },
     weatherBasedOnCityFailure: (state: any, action: IActionWithPayload<any>) => {
       state.isFetching = false

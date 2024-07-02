@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Button, Dropdown, FormControl } from 'react-bootstrap'
 import 'assets/stylesheets/dashboard.scss'
 import { CityList } from 'utils/helpers/cityList'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { weatherBasedOnCityRequest } from 'reducer'
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch()
+  const { weatherData } = useSelector((state: any) => state.weather)
   const [state, setState] = useState<Array<{
     State: string
     City: string
@@ -48,6 +49,8 @@ const Dashboard: React.FC = () => {
     })
     setState(stateList)
   }, [])
+
+  console.log(weatherData, "weatherData")
 
   useEffect(() => {
     const cityListBasedOnState = CityList.filter((it) => it.State === selectedState)
@@ -104,6 +107,13 @@ const Dashboard: React.FC = () => {
       >
         Submit
       </Button>
+
+      <div>
+        {selectedState ? <p>State : {selectedState}</p> : null}
+        {selectedCity?.City !== undefined ? <p>City : {selectedCity?.City}</p> : null}
+        {weatherData?.weather ? <p>Climate : {weatherData?.weather?.[0]?.main}</p> : null}
+        {weatherData?.weather ? <p>Climate : {weatherData?.weather?.[0]?.main}</p> : null}
+      </div>
     </div>
   )
 }
