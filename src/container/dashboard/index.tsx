@@ -14,15 +14,15 @@ export interface ICityListState {
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch()
+
   const { weatherData } = useSelector((state: any) => state.weather)
-  const [state, setState] = useState<ICityListState[]>([])
+
   const [searchQuery, setSearchQuery] = useState('')
+  const [state, setState] = useState<ICityListState[]>([])
   const [selectedState, setSelectedState] = useState<string>('')
-  const [selectedCity, setSelectedCity] = useState<ICityListState | null>(null)
-
   const [city, setCity] = useState<ICityListState[]>([])
-
   const [filteredCity, setFilteredCity] = useState<ICityListState[]>([])
+  const [selectedCity, setSelectedCity] = useState<ICityListState | null>(null)
 
   useEffect(() => {
     const tempState: string[] = []
@@ -37,8 +37,6 @@ const Dashboard: React.FC = () => {
     setState(stateList)
   }, [])
 
-  console.log(weatherData, 'weatherData')
-
   useEffect(() => {
     const cityListBasedOnState = CityList.filter((it) => it.State === selectedState)
     setCity(cityListBasedOnState)
@@ -50,11 +48,10 @@ const Dashboard: React.FC = () => {
     setFilteredCity(cityWithSearch)
   }, [searchQuery])
 
-  console.log(searchQuery, 'search', filteredCity)
+  console.log(selectedCity, "select", filteredCity, "filteredCity", city, "city", selectedState, "selectedState", state, "state", searchQuery, "searchQuery")
 
   return (
     <div className='dashboard-container'>
-
       <div className='col'>
         <h5>State</h5>
         <Dropdown>
