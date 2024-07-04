@@ -5,37 +5,24 @@ import { CityList } from 'utils/helpers/cityList'
 import { useDispatch, useSelector } from 'react-redux'
 import { weatherBasedOnCityRequest } from 'reducer'
 
+export interface ICityListState {
+  State: string
+  City: string
+  Lat: number
+  Long: number
+}
+
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch()
   const { weatherData } = useSelector((state: any) => state.weather)
-  const [state, setState] = useState<Array<{
-    State: string
-    City: string
-    Lat: number
-    Long: number
-  }>>([])
+  const [state, setState] = useState<ICityListState[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedState, setSelectedState] = useState<string>('')
-  const [selectedCity, setSelectedCity] = useState<{
-    State: string
-    City: string
-    Lat: number
-    Long: number
-  } | null>(null)
+  const [selectedCity, setSelectedCity] = useState<ICityListState | null>(null)
 
-  const [city, setCity] = useState<Array<{
-    State: string
-    City: string
-    Lat: number
-    Long: number
-  }>>([])
+  const [city, setCity] = useState<ICityListState[]>([])
 
-  const [filteredCity, setFilteredCity] = useState<Array<{
-    State: string
-    City: string
-    Lat: number
-    Long: number
-  }>>([])
+  const [filteredCity, setFilteredCity] = useState<ICityListState[]>([])
 
   useEffect(() => {
     const tempState: string[] = []
@@ -50,7 +37,7 @@ const Dashboard: React.FC = () => {
     setState(stateList)
   }, [])
 
-  console.log(weatherData, "weatherData")
+  console.log(weatherData, 'weatherData')
 
   useEffect(() => {
     const cityListBasedOnState = CityList.filter((it) => it.State === selectedState)
@@ -63,56 +50,65 @@ const Dashboard: React.FC = () => {
     setFilteredCity(cityWithSearch)
   }, [searchQuery])
 
-  console.log(searchQuery, 'search', filteredCity, 'filteredCity')
+  console.log(searchQuery, 'search', filteredCity)
 
   return (
     <div className='dashboard-container'>
-      <Dropdown>
-        <Dropdown.Toggle variant="success" id="dropdown-basic">
-          {selectedState !== '' ? selectedState : 'Choose'}
-        </Dropdown.Toggle>
-        <Dropdown.Menu>
-          {state.map((it, index) => (
-            <Dropdown.Item key={`state-${index}`} onClick={() => { setSelectedState(it.State) }}>{it.State}</Dropdown.Item>
-          ))}
-        </Dropdown.Menu>
-      </Dropdown>
-      <Dropdown>
-        <Dropdown.Toggle variant="success" id="dropdown-basic">
-          {selectedCity !== null ? selectedCity?.City : 'Choose'}
-        </Dropdown.Toggle>
-        <Dropdown.Menu>
-          <FormControl
-            autoFocus
-            className="mx-3 my-2 w-auto"
-            placeholder="Search"
-            onChange={(e) => { setSearchQuery(e.target.value) }}
-            value={searchQuery}
-          />
-          {filteredCity.map((it, index) => (
-            <Dropdown.Item key={`state-${index}`} onClick={() => { setSelectedCity(it) }}>{it.City}</Dropdown.Item>
-          ))}
-        </Dropdown.Menu>
-      </Dropdown>
-      <Button
-        onClick={() => {
-          dispatch(weatherBasedOnCityRequest({
-            q: selectedCity?.City,
-            units: 'metric',
-            // lat: selectedCity?.Lat.toFixed(2),
-            // lon: selectedCity?.Long.toFixed(2),
-            appid: '015e4eaea9c137865941644a12e60199'
-          }))
-        }}
-      >
-        Submit
-      </Button>
 
-      <div>
-        {selectedState ? <p>State : {selectedState}</p> : null}
-        {selectedCity?.City !== undefined ? <p>City : {selectedCity?.City}</p> : null}
-        {weatherData?.weather ? <p>Climate : {weatherData?.weather?.[0]?.main}</p> : null}
-        {weatherData?.weather ? <p>Climate : {weatherData?.weather?.[0]?.main}</p> : null}
+      <div className='col'>
+        <h5>State</h5>
+        <Dropdown>
+          <Dropdown.Toggle variant="success" id="dropdown-basic">
+            {selectedState !== '' ? selectedState : 'Choose'}
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            {state.map((it, index) => (
+              <Dropdown.Item key={`state-${index}`} onClick={() => { setSelectedState(it.State) }}>{it.State}</Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+      </div>
+      <div className='col'>
+        <h5>City</h5>
+        <Dropdown>
+          <Dropdown.Toggle variant="success" id="dropdown-basic">
+            {selectedCity !== null ? selectedCity?.City : 'Choose'}
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <FormControl
+              autoFocus
+              className="mx-3 my-2 w-auto"
+              placeholder="Search"
+              onChange={(e) => { setSearchQuery(e.target.value) }}
+              value={searchQuery}
+            />
+            {filteredCity.map((it, index) => (
+              <Dropdown.Item key={`state-${index}`} onClick={() => { setSelectedCity(it) }}>{it.City}</Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+      </div>
+      <div className='col'>
+        <Button
+          onClick={() => {
+            dispatch(weatherBasedOnCityRequest({
+              // q: selectedCity?.City,
+              // units: 'metric',
+              lat: selectedCity?.Lat.toFixed(2),
+              lon: selectedCity?.Long.toFixed(2),
+              appid: '015e4eaea9c137865941644a12e60199'
+            }))
+          }}
+        >
+          Submit
+        </Button>
+      </div>
+      <div className='col'>
+        {selectedState !== '' ? <p>State : {selectedState}</p> : null}
+        {weatherData?.weather !== null && selectedCity?.City !== undefined ? <p>City : {weatherData?.name}</p> : null}
+        {weatherData?.weather !== null ? <p>Climate : {weatherData?.weather?.[0]?.main}</p> : null}
+        {weatherData?.weather !== null ? <p>Description : {weatherData?.weather?.[0]?.description}</p> : null}
+        {weatherData?.weather !== null ? <p>Temperature : {(weatherData?.main?.temp - 273).toFixed(2)}</p> : null}
       </div>
     </div>
   )
