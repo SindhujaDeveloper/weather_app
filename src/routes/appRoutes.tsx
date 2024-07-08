@@ -3,16 +3,21 @@ import { createBrowserRouter } from 'react-router-dom'
 
 import Dashboard from 'container/dashboard'
 import LoginForm from 'container/loginForm'
+import MapComponent from 'container/map'
 
 const RouterData = (): any => {
   const strictRoute = createBrowserRouter([
     {
       path: '/',
-      element: <Dashboard />
+      element: <MapComponent />
     },
     {
       path: '/login',
       element: <LoginForm />
+    },
+    {
+      path: '/dashboard',
+      element: <Dashboard />
     }
   ])
 
