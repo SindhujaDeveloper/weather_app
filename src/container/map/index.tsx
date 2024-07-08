@@ -3,6 +3,7 @@ import 'assets/stylesheets/dashboard.scss'
 import { useDispatch, useSelector } from 'react-redux'
 import { weatherBasedOnCityRequest } from 'reducer'
 import { APIProvider, Map } from '@vis.gl/react-google-maps'
+import { config } from 'layout/config'
 
 export interface ICityListState {
   State: string
@@ -24,12 +25,14 @@ const MapComponent: React.FC = () => {
     }))
   }, [])
 
+  console.log(config.googleMapsApiKey, 'config.googleMapsApiKey')
   return (
     <div className='dashboard-container'>
-      <APIProvider apiKey={'AIzaSyBl5683fSMpBmdcWm00lmdDrtLI6K0uLeQ'}>
+      {config.googleMapsApiKey !== ''
+        ? <APIProvider apiKey={config.googleMapsApiKey}>
         <Map
           defaultZoom={5}
-          defaultCenter={{ lat: 13.860664, lng: 79.208138 }}
+          defaultCenter={{ lat: 13.07, lng: 80.28 }}
           onClick={(ev: any) => {
             dispatch(weatherBasedOnCityRequest({
               lat: ev.detail.latLng.lat,
@@ -39,6 +42,7 @@ const MapComponent: React.FC = () => {
           }}
         />
       </APIProvider>
+        : null}
 
       <div className='col'>
         {weatherData?.weather !== null ? <p>Country : {weatherData?.sys.country}</p> : null}

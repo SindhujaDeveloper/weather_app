@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { weatherBasedOnCityRequest } from 'reducer'
 // import GoogleMaps from 'container/googleMaps'
 import { APIProvider, Map } from '@vis.gl/react-google-maps'
+import { config } from 'layout/config'
 
 export interface ICityListState {
   State: string
@@ -52,14 +53,17 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className='dashboard-container'>
-      <APIProvider apiKey={'AIzaSyBl5683fSMpBmdcWm00lmdDrtLI6K0uLeQ'} onLoad={() => { console.log('Maps API has loaded.') }}>
-        <Map
-          defaultZoom={13}
-          defaultCenter={{ lat: -33.860664, lng: 151.208138 }}
-          onClick={(ev: any) => { console.log('detail:', ev.detail) }}
-        // onCameraChanged={(ev: MapCameraChangedEvent) => { console.log('camera changed:', ev.detail.center, 'zoom:', ev.detail.zoom) }}
-        />
-      </APIProvider>
+      {config.googleMapsApiKey !== undefined
+        ? <APIProvider apiKey={config.googleMapsApiKey} onLoad={() => { console.log('Maps API has loaded.') }}>
+          <Map
+            defaultZoom={13}
+            defaultCenter={{ lat: -33.860664, lng: 151.208138 }}
+            onClick={(ev: any) => { console.log('detail:', ev.detail) }}
+          // onCameraChanged={(ev: MapCameraChangedEvent) => { console.log('camera changed:', ev.detail.center, 'zoom:', ev.detail.zoom) }}
+          />
+        </APIProvider>
+        : null
+      }
       {/* <GoogleMaps /> */}
       <div className='col'>
         <h5>State</h5>

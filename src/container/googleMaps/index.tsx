@@ -43,6 +43,7 @@
 
 import React, { useCallback, useState } from 'react'
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api'
+import { config } from 'layout/config'
 
 const containerStyle = {
   width: '400px',
@@ -57,7 +58,7 @@ const center = {
 const GoogleMaps: React.FC = () => {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: 'AIzaSyBl5683fSMpBmdcWm00lmdDrtLI6K0uLeQ',
+    googleMapsApiKey: config.googleMapsApiKey ?? config.googleMapsApiKey,
     region: 'en'
   })
 
